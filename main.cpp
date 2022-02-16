@@ -1,10 +1,11 @@
+#include <numeric>
+#include <sstream>
+#include <vector>
 #include <iostream>
 #include <iterator>
 #include <fstream>
 #include <map>
-#include <numeric>
-#include <sstream>
-#include <vector>
+
 using namespace std;
 void replace(string &line, char at, char w){
     for(int i = 0; i < line.length(); i++){
@@ -35,23 +36,7 @@ void calculateAveragePerBrand(vector<string> vBrand, vector<float> vPrice, ofstr
     }
     out_stream << endl;
 }
-// This function calculates the average prices per category
-void calculateAveragePerCategory(vector<string> vCategory, vector<float> vPrice, ofstream& out_stream){
-    map<string,vector<float> > categoryMap;
-    for(int i = 0; i < vCategory.size(); i++){
-        categoryMap[vCategory[i]].push_back(vPrice[i]);
-    }
-    out_stream << "\tCategory\tAverage\n";
-    map<string,vector<float> >::iterator it;
-    for(it = categoryMap.begin(); it != categoryMap.end(); it++){
-        string CurrencyCategory = it->first;
-        vector<float> curPrices = it->second;
-        float BSum = accumulate(curPrices.begin(), curPrices.end(),0.0);
-        float average = BSum / curPrices.size();
-        out_stream << "\t" << CurrencyCategory << "\t" << average << "\n";
-    }
-    out_stream << endl;
-}
+
 void calculateSKUCount(vector<int> vYear,vector<int> vSKU, ofstream& out_stream){
     map<int,vector<int> > yearMap;
     for(int i = 0; i < vYear.size(); i++){
@@ -73,6 +58,23 @@ void calculateSKUCount(vector<int> vYear,vector<int> vSKU, ofstream& out_stream)
         }
         out_stream << "(Count: " << it->second.size() << ")" << endl;
     }
+}
+// This function calculates the average prices per category
+void calculateAveragePerCategory(vector<string> vCategory, vector<float> vPrice, ofstream& out_stream){
+    map<string,vector<float> > categoryMap;
+    for(int i = 0; i < vCategory.size(); i++){
+        categoryMap[vCategory[i]].push_back(vPrice[i]);
+    }
+    out_stream << "\tCategory\tAverage\n";
+    map<string,vector<float> >::iterator it;
+    for(it = categoryMap.begin(); it != categoryMap.end(); it++){
+        string CurrencyCategory = it->first;
+        vector<float> curPrices = it->second;
+        float BSum = accumulate(curPrices.begin(), curPrices.end(),0.0);
+        float average = BSum / curPrices.size();
+        out_stream << "\t" << CurrencyCategory << "\t" << average << "\n";
+    }
+    out_stream << endl;
 }
 int main(){
     vector<int> vSKU;
