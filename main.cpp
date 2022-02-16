@@ -6,35 +6,32 @@
 #include <sstream>
 #include <vector>
 using namespace std;
-
-// This function takes in a string, iterates over it
-// and replaces occurrences of char 'at' with 'with'
-void replace(string &line, char at, char with){
+void replace(string &line, char at, char w){
     for(int i = 0; i < line.length(); i++){
         if(line[i] == at){
-            line[i] = with;
+            line[i] = w;
         }
     }
 }
 // This function calculates the average prices per brand
 void calculateAveragePerBrand(vector<string> vBrand, vector<float> vPrice, ofstream& out_stream){
     // Declaring a map to store the prices band wise
-    map<string,vector<float> > brandMap;
+    map<string,vector<float> > BMap;
     // Storing the prices band wise
     for(int i = 0; i < vBrand.size(); i++){
-        brandMap[vBrand[i]].push_back(vPrice[i]);
+        BMap[vBrand[i]].push_back(vPrice[i]);
     }
     // Writing the headers to the output file
     out_stream << "\tBrand\tAverage\n";
     // Declaring an iterator for map to iterate over the map
     map<string,vector<float> >::iterator it;
     // Iterating over the map
-    for(it = brandMap.begin(); it != brandMap.end(); ++it){
-        string curBrand = it->first;
+    for(it = BMap.begin(); it != BMap.end(); ++it){
+        string currencyBrand = it->first;
         vector<float> curPrices = it->second;
-        float brandSum = accumulate(curPrices.begin(), curPrices.end(),0.0);
-        float average = brandSum / curPrices.size();
-        out_stream << "\t" << curBrand << "\t" << average << "\n";
+        float BSum = accumulate(curPrices.begin(), curPrices.end(),0.0);
+        float average = BSum / curPrices.size();
+        out_stream << "\t" << currencyBrand << "\t" << average << "\n";
     }
     out_stream << endl;
 }
@@ -47,11 +44,11 @@ void calculateAveragePerCategory(vector<string> vCategory, vector<float> vPrice,
     out_stream << "\tCategory\tAverage\n";
     map<string,vector<float> >::iterator it;
     for(it = categoryMap.begin(); it != categoryMap.end(); it++){
-        string curCategory = it->first;
+        string CurrencyCategory = it->first;
         vector<float> curPrices = it->second;
-        float brandSum = accumulate(curPrices.begin(), curPrices.end(),0.0);
-        float average = brandSum / curPrices.size();
-        out_stream << "\t" << curCategory << "\t" << average << "\n";
+        float BSum = accumulate(curPrices.begin(), curPrices.end(),0.0);
+        float average = BSum / curPrices.size();
+        out_stream << "\t" << CurrencyCategory << "\t" << average << "\n";
     }
     out_stream << endl;
 }
@@ -154,3 +151,4 @@ int main(){
     in_stream.close();
     out_stream.close();
 }
+
